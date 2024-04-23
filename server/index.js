@@ -34,7 +34,7 @@ app.post('/newPost', async (req, res) => {
 });
 
 app.put('/posts/:id', async (req, res) => {
-    const postId = req.params;
+    const postId = req.params.id;
     const { postTitle, postBody, postHeaderImage } = req.body;
 
     if (!postTitle || !postBody || !postHeaderImage) {
@@ -45,6 +45,7 @@ app.put('/posts/:id', async (req, res) => {
             'UPDATE posts SET title=$2, body=$3, header_image=$4 WHERE id=$1',
             [postId, postTitle, postBody, postHeaderImage]
         );
+            console.log(postId, postTitle, postBody, postHeaderImage);
         res.status(200).json({ message: 'Post updated successfully!', postId: postId });
     } catch (err) {
         console.log('Error while updating data:', err);
@@ -68,7 +69,6 @@ app.delete('/posts/:id', async (req, res) => {
 });
 
 app.get('/posts', async (req, res) => {
-    console.log(req);
     try {
         const result = await db.query('SELECT * FROM posts');
         res.status(200).json(result.rows);
