@@ -54,7 +54,7 @@ app.put('/posts/:id', async (req, res) => {
 });
 
 app.delete('/posts/:id', async (req, res) => {
-    const postId = req.params;
+    const postId = req.params.id;
 
     try {
         await db.query(
