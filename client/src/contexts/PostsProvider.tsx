@@ -1,0 +1,59 @@
+import { createContext, useEffect, useState } from 'react';
+
+type Post = {
+  postId: string;
+  postTitle: string;
+  postBody: string;
+  postHeaderImage: string;
+};
+
+type PostJSON = {
+  id: string;
+  title: string;
+  body: string;
+  header_image: string;
+};
+
+type PostContext = {
+  submitted: boolean;
+  setSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
+  posts: Post[],
+};
+
+const REACT_APP_BACK_PORT = 8077;
+
+const url = `http://localhost:${REACT_APP_BACK_PORT}/posts`;
+
+export const PostContext = createContext({} as PostContext);
+
+export const PostsProvider = ({ children }: { children: React.ReactNode }) => {
+  const [posts, setPosts] = useState([] as Post[]);
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const getPosts = async () => {
+      const data = await fetch(url)
+        .then(res => res.json())
+        .then(data => data.map((item: PostJSON) => ({
+          postId: item.id,
+          postTitle: item.title,
+          postBody: item.body,
+          postHeaderImage: item.header_image,
+        })))
+      setPosts(data);
+    }
+    getPosts();
+  }, [submitted]);
+
+  return (
+    <PostContext.Provider
+      value={{
+        submitted,
+        setSubmitted,
+        posts,
+      }}
+    >
+      {children}
+    </PostContext.Provider>
+  );
+};

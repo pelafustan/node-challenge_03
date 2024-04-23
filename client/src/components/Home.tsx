@@ -1,5 +1,7 @@
 import { Button, Divider, Layout } from 'antd';
 import { CameraTwoTone, LikeFilled, MenuOutlined } from '@ant-design/icons';
+import PostCreationForm from './PostCreationForm';
+import { PostGrid } from './PostGrid';
 
 const { Header, Content, Footer } = Layout;
 
@@ -50,9 +52,9 @@ export const Home = () => {
           }}
         >
           <Divider><h2>New Post</h2></Divider>
-          {/* TODO: form component to retrieve data when creating new posts */}
+          <PostCreationForm />
           <Divider><h2>Posts</h2></Divider>
-          {/* TODO: some sort of grid/table to show all posts created */}
+          <PostGrid />
         </div>
       </Content>
       <Footer
