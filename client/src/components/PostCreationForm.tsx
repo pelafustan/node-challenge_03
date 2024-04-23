@@ -1,5 +1,5 @@
-import { Button, Form, Input  } from "antd";
-import { usePosts } from "../hooks/usePosts";
+import { Button, Form, Input  } from 'antd';
+import { usePosts } from '../hooks/usePosts';
 
 const REACT_APP_BACK_PORT = import.meta.env.VITE_BACK_PORT || 3000;
 
@@ -28,7 +28,7 @@ export default function PostCreationForm({ isUpdate = false, postId, setModal }:
   let idx = -1
 
   if (isUpdate && postId) {
-    idx = posts.findIndex(song => song.postId === postId);
+    idx = posts.findIndex(post => post.postId === postId);
   }
 
   const onFinish = async (values: FormData) => {
@@ -54,7 +54,7 @@ export default function PostCreationForm({ isUpdate = false, postId, setModal }:
         console.log(err);
       }
     } else {
-      const response = await fetch(`https://localhost:${REACT_APP_BACK_PORT}/posts:${postId}`, {
+      const response = await fetch(`http://localhost:${REACT_APP_BACK_PORT}/posts/${postId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ export default function PostCreationForm({ isUpdate = false, postId, setModal }:
         >
           <Input placeholder="URL" />
         </Form.Item>
-        <Button type={!isUpdate ? 'primary' : 'text'} htmlType='submit'>
+        <Button type={'primary'} htmlType='submit'>
           {!isUpdate ? 'Submit' : 'Update'}
         </Button>
         <Button
