@@ -20,7 +20,7 @@ type PostContext = {
   posts: Post[],
 };
 
-const REACT_APP_BACK_PORT = 8077;
+const REACT_APP_BACK_PORT = import.meta.env.VITE_BACK_PORT || 3000;
 
 const url = `http://localhost:${REACT_APP_BACK_PORT}/posts`;
 

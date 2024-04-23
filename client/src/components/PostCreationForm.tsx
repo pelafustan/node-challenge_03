@@ -1,7 +1,7 @@
 import { Button, Form, Input  } from "antd";
 import { usePosts } from "../hooks/usePosts";
 
-const REACT_APP_BACK_PORT = 8077;
+const REACT_APP_BACK_PORT = import.meta.env.VITE_BACK_PORT || 3000;
 
 type FormProps = {
   isUpdate?: boolean;
@@ -25,8 +25,10 @@ export default function PostCreationForm({ isUpdate = false, postId, setModal }:
     form.resetFields();
   };
 
+  let idx = -1
+
   if (isUpdate && postId) {
-    const idx = posts.findIndex(song => song.postId === postId);
+    idx = posts.findIndex(song => song.postId === postId);
   }
 
   const onFinish = async (values: FormData) => {
