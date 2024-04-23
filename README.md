@@ -35,6 +35,23 @@ Once the backend is running, open a new terminal –or send the previous started
 npm install && npm run dev
 ```
 
+#### Observation
+
+I used env variables to deal with URLs, credentials, and ports in the front and the back. Nonetheless, I added the following defaults:
+
+* `postgres` is running on port `5432` of `localhost`.
+* `express` is running on port `3000` of `localhost`.
+* `vite` is running on port `5473` of `localhost`.
+* Your database user is `postgres`.
+* The database password is `postgres`.
+* The database is called `posts`.
+* The table is called `posts`.
+* The columns of `posts` are:
+  * `id TEXT NOT NULL PRIMARY KEY`.
+  * `title TEXT NOT NULL`.
+  * `body TEXT NOT NULL`.
+  * `header-image TEXT NOT NULL`.
+
 Now, you're ready to play with the app. Have fun!
 
 ---
