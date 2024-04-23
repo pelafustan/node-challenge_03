@@ -50,7 +50,21 @@ app.put('/posts/:id', async (req, res) => {
         console.log('Error while updating data:', err);
         res.status(500).json({ error: 'Something went wrong :c' });
     }
+});
 
+app.delete('/posts/:id', async (req, res) => {
+    const postId = req.params;
+
+    try {
+        await db.query(
+            'DELETE FROM posts WHERE id=$1',
+            [postId]
+        );
+        res.status(200).json({ message: 'Post deleted successfully!', postId: postId });
+    } catch (err) {
+        console.log('Error while deleting data:', err);
+        res.status(500).json({ error: 'Something went wrong :c' });
+    }
 });
 
 app.get('/posts', async (req, res) => {
