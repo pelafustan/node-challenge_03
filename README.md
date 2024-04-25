@@ -51,6 +51,7 @@ I used env variables to deal with URLs, credentials, and ports in the front and 
   * `title TEXT NOT NULL`.
   * `body TEXT NOT NULL`.
   * `header-image TEXT NOT NULL`.
+  * `likes BIGINT NOT NULL CHECK(likes > 0)`.
 
 Now, you're ready to play with the app. Have fun!
 
