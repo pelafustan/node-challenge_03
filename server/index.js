@@ -23,7 +23,7 @@ app.post('/newPost', async (req, res) => {
 
     try {
         await db.query(
-            'INSERT INTO posts (id, title, body, header_image) VALUES ($1, $2, $3, $4)',
+            'INSERT INTO posts (id, title, body, header_image, likes) VALUES ($1, $2, $3, $4, 0)',
             [postId, postTitle, postBody, postHeaderImage]
         );
         res.status(201).json({ message: 'Post created successfully!', postId: postId });
@@ -45,10 +45,30 @@ app.put('/posts/:id', async (req, res) => {
             'UPDATE posts SET title=$2, body=$3, header_image=$4 WHERE id=$1',
             [postId, postTitle, postBody, postHeaderImage]
         );
-            console.log(postId, postTitle, postBody, postHeaderImage);
+        console.log(postId, postTitle, postBody, postHeaderImage);
         res.status(200).json({ message: 'Post updated successfully!', postId: postId });
     } catch (err) {
         console.log('Error while updating data:', err);
+        res.status(500).json({ error: 'Something went wrong :c' });
+    }
+});
+
+app.put('/posts/:id/like', async (req, res) => {
+    const postId = req.params.id;
+    const { likes } = req.body;
+
+    if (!likes) {
+        return res.status(400).json({ error: 'You are not passing any like' });
+    }
+
+    try {
+        await db.query(
+            'UPDATE posts SET likes=$2 WHERE id=$1',
+            [postId, likes]
+        );
+        res.status(200).json({ message: 'Likes updated!', postId: postId });
+    } catch (err) {
+        console.log('Error while updating likes:', err);
         res.status(500).json({ error: 'Something went wrong :c' });
     }
 });
