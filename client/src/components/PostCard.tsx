@@ -1,5 +1,5 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Card, Modal, Popconfirm } from 'antd';
+import { DeleteOutlined, EditOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons';
+import { Badge, Button, Card, Modal, Popconfirm } from 'antd';
 import { useState } from 'react';
 import PostCreationForm from './PostCreationForm';
 import { usePosts } from '../hooks/usePosts';
@@ -9,11 +9,12 @@ type PostCardProps = {
   title: string;
   body: string;
   headerImage: string;
+  likes: string;
 }
 
 const URL = import.meta.env.VITE_BACK_URL || 'http://localhost:3000/posts';
 
-export const PostCard = ({ id, title, body, headerImage }: PostCardProps) => {
+export const PostCard = ({ id, title, body, headerImage, likes }: PostCardProps) => {
   const [modal, setModal] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,6 +27,30 @@ export const PostCard = ({ id, title, body, headerImage }: PostCardProps) => {
   const onDelete = () => {
     setConfirm(true);
   };
+
+  const handleLike = async () => {
+    if (!localStorage.getItem(id)) {
+      localStorage.setItem(id, 'true');
+      await fetch(`${URL}/${id}/like`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 'likes': parseInt(likes) + 1 })
+      });
+      setSubmitted(!submitted);
+    } else {
+      localStorage.setItem(id, '');
+      await fetch(`${URL}/${id}/like`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 'likes': parseInt(likes) - 1 })
+      });
+      setSubmitted(!submitted);
+    }
+  }
 
   const handleDeletion = async () => {
     setLoading(true);
@@ -42,10 +67,10 @@ export const PostCard = ({ id, title, body, headerImage }: PostCardProps) => {
     <>
       <Card
         title={title}
-        style={{minWidth: 200}}
+        style={{ minWidth: 200 }}
         cover={<img style={{ width: "90%", margin: 'auto' }} alt={title} src={headerImage} />}
         actions={[
-          <EditOutlined key='edit' onClick={onEdit} />,
+          <EditOutlined key='edit' onClick={onEdit} style={{ fontSize: '1.5rem' }} />,
           <Popconfirm
             title='Confirm deletion?'
             description='Are you sure? This action cannot be undone once performed.'
@@ -54,8 +79,13 @@ export const PostCard = ({ id, title, body, headerImage }: PostCardProps) => {
             onCancel={() => setConfirm(false)}
             okButtonProps={{ loading: loading }}
           >
-            <DeleteOutlined key='delete' onClick={onDelete} />
-          </Popconfirm>
+            <DeleteOutlined key='delete' onClick={onDelete} style={{ fontSize: '1.5rem' }} />
+          </Popconfirm>,
+          <Badge count={likes} size='small'>
+            <Button type='text' style={{ margin: 0, padding: 0 }} onClick={handleLike}>
+              {!localStorage.getItem(id) ? <HeartOutlined style={{ fontSize: '1.5rem' }} /> : <HeartFilled style={{ fontSize: '1.5rem', color: 'red' }} />}
+            </Button>
+          </Badge>
         ]}
       >
         {body}

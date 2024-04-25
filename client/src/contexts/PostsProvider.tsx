@@ -5,6 +5,7 @@ type Post = {
   postTitle: string;
   postBody: string;
   postHeaderImage: string;
+  likes: string;
 };
 
 type PostJSON = {
@@ -12,6 +13,7 @@ type PostJSON = {
   title: string;
   body: string;
   header_image: string;
+  likes: string;
 };
 
 type PostContext = {
@@ -39,8 +41,14 @@ export const PostsProvider = ({ children }: { children: React.ReactNode }) => {
           postTitle: item.title,
           postBody: item.body,
           postHeaderImage: item.header_image,
+          likes: item.likes,
         })))
       setPosts(data);
+      data.forEach((item: Post) => {
+        if (!localStorage.getItem(item.postId)) {
+          localStorage.setItem(item.postId, '');
+        }
+      });
     }
     getPosts();
   }, [submitted]);

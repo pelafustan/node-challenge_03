@@ -20,7 +20,7 @@ export const PostGrid = () => {
         dataSource={posts}
         renderItem={(item) => (
           <List.Item key={item.postId}>
-            <PostCard id={item.postId} title={item.postTitle} body={item.postBody} headerImage={item.postHeaderImage} />
+            <PostCard id={item.postId} title={item.postTitle} body={item.postBody} headerImage={item.postHeaderImage} likes={item.likes} />
           </List.Item>
         )}
       />
